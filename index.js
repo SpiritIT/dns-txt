@@ -2,7 +2,7 @@
 
 var bindexOf = require('buffer-indexof')
 
-var equalSign = new Buffer('=')
+var equalSign = Buffer.from('=')
 
 module.exports = function (opts) {
   var binary = opts ? opts.binary : false
@@ -11,7 +11,7 @@ module.exports = function (opts) {
   that.encode = function (data, buf, offset) {
     if (!data) data = {}
     if (!offset) offset = 0
-    if (!buf) buf = new Buffer(that.encodingLength(data) + offset)
+    if (!buf) buf = Buffer.alloc(that.encodingLength(data) + offset)
 
     var oldOffset = offset
     var keys = Object.keys(data)

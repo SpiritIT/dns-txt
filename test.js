@@ -10,7 +10,7 @@ var obj = {
   empty: '',
   null: null,
   bool: true,
-  buffer: new Buffer('bar')
+  buffer: Buffer.from("bar")
 }
 
 test('encodingLength', function (t) {
@@ -21,7 +21,7 @@ test('encodingLength', function (t) {
 
 test('encode', function (t) {
   var buf = txtBin.encode(obj)
-  var expected = new Buffer('0a' + '537472696e67' + '3d' + '666f6f' +
+  var expected = Buffer.from('0a' + '537472696e67' + '3d' + '666f6f' +
                             '09' + '6e756d626572' + '3d' + '3432' +
                             '06' + '656d707479' + '3d' +
                             '09' + '6e756c6c' + '3d' + '6e756c6c' +
@@ -34,7 +34,7 @@ test('encode', function (t) {
 
 test('encode - empty', function (t) {
   var buf = txtBin.encode({})
-  var expected = new Buffer('00', 'hex')
+  var expected = Buffer.from('00', 'hex')
   t.deepEqual(buf, expected)
   t.equal(txtBin.encode.bytes, expected.length)
   t.end()
@@ -42,27 +42,27 @@ test('encode - empty', function (t) {
 
 test('encode - undefined', function (t) {
   var buf = txtBin.encode()
-  var expected = new Buffer('00', 'hex')
+  var expected = Buffer.from('00', 'hex')
   t.deepEqual(buf, expected)
   t.equal(txtBin.encode.bytes, expected.length)
   t.end()
 })
 
 test('encode - with buffer', function (t) {
-  var buf = new Buffer(3)
+  var buf = Buffer.alloc(3)
   buf.fill(255)
   txtBin.encode({}, buf)
-  var expected = new Buffer('00ffff', 'hex')
+  var expected = Buffer.from('00ffff', 'hex')
   t.deepEqual(buf, expected)
   t.equal(txtBin.encode.bytes, 1)
   t.end()
 })
 
 test('encode - with buffer and offset', function (t) {
-  var buf = new Buffer(3)
+  var buf = Buffer.alloc(3)
   buf.fill(255)
   txtBin.encode({}, buf, 1)
-  var expected = new Buffer('ff00ff', 'hex')
+  var expected = Buffer.from('ff00ff', 'hex')
   t.deepEqual(buf, expected)
   t.equal(txtBin.encode.bytes, 1)
   t.end()
@@ -72,12 +72,12 @@ test('decode', function (t) {
   var encoded = txtBin.encode(obj)
   var result = txtBin.decode(encoded)
   var expected = {
-    string: new Buffer('foo'),
-    number: new Buffer('42'),
-    empty: new Buffer(0),
-    null: new Buffer('null'),
+    string: Buffer.from('foo'),
+    number: Buffer.from('42'),
+    empty: Buffer.alloc(0),
+    null: Buffer.from('null'),
     bool: true,
-    buffer: new Buffer('bar')
+    buffer: Buffer.from('bar')
   }
   t.deepEqual(result, expected)
   t.equal(txtBin.decode.bytes, encoded.length)
@@ -106,7 +106,7 @@ test('decode - duplicate', function (t) {
     foo: 'ignore this'
   }
   var expected = {
-    foo: new Buffer('bar')
+    foo: Buffer.from('bar')
   }
   var encoded = txtBin.encode(orig)
   var result = txtBin.decode(encoded)
@@ -116,7 +116,7 @@ test('decode - duplicate', function (t) {
 })
 
 test('decode - single zero bype', function (t) {
-  var encoded = new Buffer('00', 'hex')
+  var encoded = Buffer.from('00', 'hex')
   var result = txtBin.decode(encoded)
   t.deepEqual(result, {})
   t.equal(txtBin.decode.bytes, encoded.length)
@@ -124,7 +124,7 @@ test('decode - single zero bype', function (t) {
 })
 
 test('decode - with offset', function (t) {
-  var encoded = new Buffer('012300', 'hex')
+  var encoded = Buffer.from('012300', 'hex')
   var result = txtBin.decode(encoded, 2)
   t.deepEqual(result, {})
   t.equal(txtBin.decode.bytes, 1)
