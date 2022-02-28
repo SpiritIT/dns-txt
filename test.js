@@ -10,7 +10,7 @@ var obj = {
   empty: '',
   null: null,
   bool: true,
-  buffer: Buffer.from("bar")
+  buffer: Buffer.from('bar')
 }
 
 test('encodingLength', function (t) {
